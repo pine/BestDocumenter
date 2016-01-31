@@ -1,6 +1,4 @@
-
 #include "client.h"
-#include "response/util.h"
 
 using namespace picojson;
 
@@ -15,7 +13,7 @@ namespace github {
     Client::~Client() {
     }
 
-    std::vector<response::GitHubCommit> Client::fetchReposCommits(
+    response::GitHubCommitArrayPtr Client::fetchReposCommits(
             const std::string& owner,
             const std::string& repo,
             std::string* err
@@ -31,13 +29,13 @@ namespace github {
         parse(out, body.begin(), body.end(), err);
 
         if (!err->empty()) {
-            return response::util::getEmptyArray<response::GitHubCommit>();
+            return response::GitHubCommitArrayPtr();
         }
 
         return response::GitHubCommit::inflateArray(out, err);
     }
 
-    response::GitHubCommit Client::fetchReposCommit(
+    response::GitHubCommitPtr Client::fetchReposCommit(
             const std::string& owner,
             const std::string& repo,
             const std::string& sha,
@@ -51,11 +49,13 @@ namespace github {
         auto response = http_->doGet(path.str());
         auto body     = response.getBody();
 
+        std::cout << body << std::endl;
+
         value out;
         parse(out, body.begin(), body.end(), err);
 
         if (!err->empty()) {
-            return response::GitHubCommit();
+            return response::GitHubCommitPtr();
         }
 
         return response::GitHubCommit::inflate(out, err);

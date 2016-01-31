@@ -1,24 +1,48 @@
 #include <string>
 #include <memory>
+#include <fstream>
+#include <sstream>
 #include <picojson.h>
 
-#include "http/client.h"
+#include "best_documenter/parser.h"
+#include "best_documenter/config.h"
+#include "best_documenter/counter.h"
 #include "github/client.h"
+#include "http/client.h"
 
-int main(int argc, char **argv) {
+using namespace best_documenter;
+
+int main(int argc, char** argv) {
+    std::string err;
+    Parser parser;
+    parser.parse(argc, argv);
+
+    Config loader;
+    auto config = loader.load(parser.getConfigFileName(), &err);
+
     auto http = std::make_shared<http::Client>();
     http->setUserAgent("pine613/BestDocumenter");
 
-    std::string err;
-    github::Client github(http);
+    auto github = std::make_shared<github::Client>(http);
+    Counter counter(github);
+    counter.setAccessToken(config->getAccessToken());
+    counter.setRepos(config->getRepos());
 
-    auto commits = github.fetchReposCommits("pine613", "crystal-rfc5988", &err);
-    if (!err.empty()) std::cout << err << std::endl;
+    auto result = counter.compute();
 
-    for (auto& commit : commits) {
-        std::cout << commit.url << std::endl;
-        std::cout << commit.committer.login << std::endl;
-    }
+    //
+    // auto commits = github.fetchReposCommits("pine613", "crystal-rfc5988", &err);
+    // if (!err.empty()) std::cout << err << std::endl;
+    //
+    // auto commit = commits->front();
+    // std::cout << commit->committer->login << std::endl;
+    // std::cout << commit->sha << std::endl;
+    //
+    // auto commitDetail = github.fetchReposCommit("pine613", "crystal-rfc5988", commit->sha, &err);
+    // if (!err.empty()) std::cout << err << std::endl;
+    //
+    // std::cout << commitDetail->committer->login << std::endl;
+    // std::cout << commitDetail->files->front()->filename << std::endl;
 
     return 0;
 }

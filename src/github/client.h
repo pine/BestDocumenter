@@ -6,6 +6,7 @@
 
 #include "../http/client.h"
 #include "response/github_commit.h"
+#include "response/util.h"
 
 namespace github {
     class Client {
@@ -15,13 +16,13 @@ namespace github {
         Client(std::shared_ptr<http::Client> http);
         ~Client();
 
-        std::vector<response::GitHubCommit> fetchReposCommits(
+        response::GitHubCommitArrayPtr fetchReposCommits(
                 const std::string& owner,
                 const std::string& repo,
                 std::string* err
                 );
 
-        response::GitHubCommit fetchReposCommit(
+        response::GitHubCommitPtr fetchReposCommit(
                 const std::string& owner,
                 const std::string& repo,
                 const std::string& sha,

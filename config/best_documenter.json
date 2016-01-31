@@ -1,0 +1,8 @@
+{
+  "github": {
+    "access_token": "ACCESS_TOKEN"
+  },
+  "repos": [
+    "owner/repo"
+  ]
+}
