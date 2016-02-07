@@ -23,12 +23,12 @@ int main(int argc, char** argv) {
     auto http = std::make_shared<http::Client>();
     http->setUserAgent("pine613/BestDocumenter");
 
-    auto github = std::make_shared<github::Client>(http);
-    Counter counter(github);
-    counter.setAccessToken(config->getAccessToken());
-    counter.setRepos(config->getRepos());
-
-    auto result = counter.compute();
+    auto github  = std::make_shared<github::Client>(http);
+    auto counter = std::make_shared<Counter>(github);
+    counter->setAccessToken(config->getAccessToken());
+    counter->setRepos(config->getRepos());
+    //
+    // auto result = counter->compute();
 
     //
     // auto commits = github.fetchReposCommits("pine613", "crystal-rfc5988", &err);

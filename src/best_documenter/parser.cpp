@@ -2,7 +2,8 @@
 
 namespace best_documenter {
     Parser::Parser() {
-        parser_.add<std::string>("config-file", 'c', "Configuration file path", true, "");
+        parser_.add<std::string>("config", 'c', "Configuration file path", true, "");
+        parser_.add<int32_t>("days", 'd', "Duration days", false, 7);
     }
 
     Parser::~Parser() {
@@ -13,6 +14,10 @@ namespace best_documenter {
     }
 
     std::string Parser::getConfigFileName() {
-        return parser_.get<std::string>("config-file");
+        return parser_.get<std::string>("config");
+    }
+
+    int32_t Parser::getDurationDays() {
+        return parser_.get<int32_t>("days");
     }
 }

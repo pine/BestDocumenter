@@ -1,9 +1,12 @@
 #include <memory>
 #include <string>
+
 #include "../github/client.h"
 #include "model/result.h"
 
 namespace best_documenter {
+    using GitHubCommitArrayPtr = github::response::GitHubCommitArrayPtr;
+
     class Counter {
     public:
         Counter(std::shared_ptr<github::Client> github);
@@ -18,5 +21,11 @@ namespace best_documenter {
         std::shared_ptr<github::Client> github_;
         std::string                     accessToken_;
         std::vector<std::string>        repos_;
+
+        GitHubCommitArrayPtr fetchReposCommits(
+                const std::string& repo,
+                std::string* err
+                );
+
     };
 }

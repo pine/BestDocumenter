@@ -1,3 +1,4 @@
+#include <cinttypes>
 #include <string>
 #include <cmdline.h>
 
@@ -8,7 +9,9 @@ namespace best_documenter {
         ~Parser();
 
         void parse(int argc, char** argv);
+
         std::string getConfigFileName();
+        int32_t getDurationDays();
 
     private:
         cmdline::parser parser_;
