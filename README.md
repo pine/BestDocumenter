@@ -39,5 +39,12 @@ $ CXX=/usr/bin/g++-5 cmake .
 $ make
 ```
 
+## Test
+This project uses [Catch](https://github.com/philsquared/Catch) as test framework.
+
+```
+$ ./bin/best_documenter_test -s
+```
+
 ## License
 BSD License
