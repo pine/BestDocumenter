@@ -9,6 +9,7 @@
 #include "best_documenter/counter.h"
 #include "github/client.h"
 #include "http/client.h"
+#include "http/rfc5988.h"
 
 using namespace best_documenter;
 

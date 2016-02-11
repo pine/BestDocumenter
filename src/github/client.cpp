@@ -30,9 +30,9 @@ namespace github {
         http::GetParams params = { { "page", "1" }, { "per_page", "100" } };
         if (opts) { params.insert(opts->begin(), opts->end()); }
 
-        auto response = http_->doGet(path.str(), &params);
-        auto body     = response.getBody();
-        auto header   = response.getParsedHeader();
+        auto  response = http_->doGet(path.str(), &params);
+        auto  body     = response.getBody();
+        auto& header   = *response.getParsedHeader();
 
         value out;
         parse(out, body.begin(), body.end(), err);
