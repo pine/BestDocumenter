@@ -20,23 +20,23 @@ int main(int argc, char** argv) {
     Config loader;
     auto config = loader.load(parser.getConfigFileName(), &err);
 
-    auto http = std::make_shared<http::Client>();
-    http->setUserAgent("pine613/BestDocumenter");
-
+    auto http    = std::make_shared<http::Client>();
     auto github  = std::make_shared<github::Client>(http);
     auto counter = std::make_shared<Counter>(github);
-    counter->setAccessToken(config->getAccessToken());
+    http->setUserAgent("pine613/BestDocumenter");
+    github->setAccessToken(config->getAccessToken());
     counter->setRepos(config->getRepos());
+
     //
     // auto result = counter->compute();
 
     //
-    // auto commits = github.fetchReposCommits("pine613", "crystal-rfc5988", &err);
-    // if (!err.empty()) std::cout << err << std::endl;
-    //
-    // auto commit = commits->front();
-    // std::cout << commit->committer->login << std::endl;
-    // std::cout << commit->sha << std::endl;
+    auto commits = github->fetchReposCommits("pine613", "dotfiles", &err);
+    if (!err.empty()) std::cout << err << std::endl;
+
+    auto commit = commits->front();
+    std::cout << commit->committer->login << std::endl;
+    std::cout << commit->sha << std::endl;
     //
     // auto commitDetail = github.fetchReposCommit("pine613", "crystal-rfc5988", commit->sha, &err);
     // if (!err.empty()) std::cout << err << std::endl;

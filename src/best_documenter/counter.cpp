@@ -10,7 +10,6 @@ namespace best_documenter {
 
     std::shared_ptr<model::Result> Counter::compute() {
         auto result = std::make_shared<model::Result>();
-
         return result;
     }
 

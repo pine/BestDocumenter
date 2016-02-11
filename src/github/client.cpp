@@ -13,17 +13,26 @@ namespace github {
     Client::~Client() {
     }
 
+    void Client::setAccessToken(const std::string& accessToken) {
+        http_->setHeader("Authorization: token " + accessToken);
+    }
+
     response::GitHubCommitArrayPtr Client::fetchReposCommits(
             const std::string& owner,
             const std::string& repo,
-            std::string* err
+            std::string* err,
+            const http::GetParams* opts
             )
     {
         std::stringstream path;
         path << ENDPOINT << "repos" << "/" << owner << "/" << repo << "/commits";
 
-        auto response = http_->doGet(path.str());
+        http::GetParams params = { { "page", "1" }, { "per_page", "100" } };
+        if (opts) { params.insert(opts->begin(), opts->end()); }
+
+        auto response = http_->doGet(path.str(), &params);
         auto body     = response.getBody();
+        auto header   = response.getParsedHeader();
 
         value out;
         parse(out, body.begin(), body.end(), err);

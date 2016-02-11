@@ -16,10 +16,13 @@ namespace github {
         Client(std::shared_ptr<http::Client> http);
         ~Client();
 
+        void setAccessToken(const std::string& accessToken);
+
         response::GitHubCommitArrayPtr fetchReposCommits(
                 const std::string& owner,
                 const std::string& repo,
-                std::string* err
+                std::string* err,
+                const http::GetParams* opts = nullptr
                 );
 
         response::GitHubCommitPtr fetchReposCommit(

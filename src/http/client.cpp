@@ -7,6 +7,7 @@ namespace http {
         slist_ = nullptr;
 
         curl_easy_setopt(curl_, CURLOPT_WRITEFUNCTION, &Client::writeCallback);
+        curl_easy_setopt(curl_, CURLOPT_HEADERFUNCTION, &Client::headerCallback);
     }
 
     Client::~Client() {
@@ -25,6 +26,7 @@ namespace http {
 
         curl_easy_setopt(curl_, CURLOPT_HTTPHEADER, slist_);
         curl_easy_setopt(curl_, CURLOPT_WRITEDATA, &response);
+        curl_easy_setopt(curl_, CURLOPT_HEADERDATA, &response);
         curl_easy_setopt(curl_, CURLOPT_URL, url.c_str());
         curl_easy_perform(curl_);
 
@@ -46,6 +48,12 @@ namespace http {
     size_t Client::writeCallback(char* ptr, size_t size, size_t nmemb, Response* response) {
         size_t dataLength = size * nmemb;
         response->appendBody(ptr, dataLength);
+        return dataLength;
+    }
+
+    size_t Client::headerCallback(char* buffer, size_t size, size_t nitems, Response* response) {
+        size_t dataLength = size * nitems;
+        response->appendHeader(buffer, dataLength);
         return dataLength;
     }
 

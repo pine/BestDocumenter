@@ -1,5 +1,6 @@
 #pragma once
 
+#include <iostream>
 #include <string>
 #include <unordered_map>
 #include <utility>
@@ -31,6 +32,7 @@ namespace http {
         Client& operator=(const Client&);
 
         static size_t writeCallback(char* ptr, size_t size, size_t nmemb, Response* response);
+        static size_t headerCallback(char* ptr, size_t size, size_t nitems, Response* userdata);
         std::string getQueryString(const GetParams* params);
 
         inline std::string escape(const std::string& string) {
