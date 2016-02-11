@@ -10,15 +10,32 @@ $ brew install cmake curl gflags
 ```
 
 ### Ubuntu (14.04)
+First, you must install gcc 5 or higher.
 
 ```
-$ sudo apt-get install g++ cmake libgflags-dev libcurl4-openssl-dev
+$ sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+$ sudo apt-get update
+$ sudo apt-get install gcc-5 g++-5
+```
+
+And, please install dependency libs.
+
+```
+$ sudo apt-get install cmake libgflags-dev libcurl4-openssl-dev
 ```
 
 ## Build
+### Mac OS X
 
 ```
 $ cmake .
+$ make
+```
+
+### Ubuntu (14.04)
+
+```
+$ CXX=/usr/bin/g++-5 cmake .
 $ make
 ```
 
