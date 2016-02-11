@@ -1,4 +1,4 @@
-# BestDocumenter
+# BestDocumenter [![Build Status](https://travis-ci.org/pine613/BestDocumenter.svg?branch=master)](https://travis-ci.org/pine613/BestDocumenter)
 Count your document contributions
 
 ## Requirements
