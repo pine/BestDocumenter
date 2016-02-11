@@ -1,0 +1,9 @@
+language: objective-c
+sudo: false
+
+install:
+  - brew install cmake curl gflags
+
+script:
+  - cmake .
+  - make
