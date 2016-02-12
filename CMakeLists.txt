@@ -8,6 +8,10 @@ add_definitions("-DPICOJSON_USE_INT64")
 find_package(PkgConfig)
 pkg_check_modules(PC_gflags QUIET libgflags)
 
+if(EXISTS "/usr/local/lib")
+    link_directories(/usr/local/lib)
+endif()
+
 set(gflags_SHARED    FALSE)
 set(gflags_NOTHREADS FALSE)
 
