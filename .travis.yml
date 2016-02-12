@@ -8,3 +8,7 @@ script:
   - cmake .
   - make
   - ./bin/best_documenter_test
+
+notifications:
+  slack:
+    - secure: "Tqfk24t7KF0KCU8EKjNFJ+JX1GY+r8qdhURNA6y8Avt59GTp8DSIsoW5nepDPWWUTjvgcCOgIDBdPZVGOCaWD6xRSeENppOz8jJixWHA1tRK9+MP1bRJyZLxJMlW5wI0/I9QMFa3v6lO9N8pzi3Ago+URz2n09ZcmaSV2/6QBo0O6unpXjKXqHBsRm8L+d5nRaCaBHl3jVIHNbmwVlv7HKUrp/iB6TCjdTfachcJZOPLSuk10JLmkG29t2rlONQjscZZKR8+amTyOR3jmwMo7Pco+6hMnaCAZlFbY/RjZZ7UtTHuQRQww1j4mrVhCyCRjCjHTLU3BveYCBm3tOiAhPJPbXe49+YPjK1Csw4wzxvcFiS4SKs0o5NE7zrDdrEp5yb7Crm+N5JmxTAos3LJgTnDo9TYNHhbtS2jJRds6emp4LXpW91bzhP9hTPNxW+VjREpwo3/Nao/dJGZ+7Zt1b5G4GEVQ7uIA/A/Jwow2H2kphcZGnOxa6JSSsc+Jy1TDkvS4wjtiHuXq+MjQrlCZ6QWSyxUQVRpO6sbdmR7f+APkEkxxeYd7V2G9FJBtOwxzYxumlwZ7NGr0pJeaeTIT8w65jqe0fCjanbmCEfwsZC4+eYyMXw9bjnh+X8oVEqMYcH+wMTRhkmn1E4kzS58aYrixaefX7wFxssGq+TyhHo="
