@@ -22,3 +22,8 @@ target_link_libraries(best_documenter curl gflags)
 file(GLOB_RECURSE test_files "src/*/*.cpp" "test/*.cpp")
 add_executable(best_documenter_test ${test_files})
 target_link_libraries(best_documenter_test curl gflags)
+
+if(TARGET best_documenter_test)
+    add_definitions("-Dprivate=public")
+    add_definitions("-Dprotected=public")
+endif()
