@@ -6,11 +6,12 @@
 #include <regex>
 #include <utility>
 #include <vector>
+#include "rfc5988/model.h"
 
 namespace http {
     class RFC5988 {
     public:
-        static void parse(const std::string& header);
+        static std::shared_ptr<std::vector<rfc5988::Model>> parse(const std::string& header);
 
     private:
         static std::shared_ptr<std::vector<std::string>> split(

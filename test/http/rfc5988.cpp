@@ -1,6 +1,23 @@
 #include <catch.hpp>
 #include "../../src/http/rfc5988.h"
 
+TEST_CASE("can parse RFC5988 link header", "[RFC5988]") {
+    SECTION("can parse an empty string") {
+        auto results = http::RFC5988::parse("");
+        REQUIRE(results->size() == 0);
+    }
+
+    SECTION("can parse multi values") {
+        auto results = http::RFC5988::parse(R"(<URL1>, <URL2>; rel="next")");
+        REQUIRE(results->size() == 2);
+        REQUIRE(results->front().getUrl() == "URL1");
+        REQUIRE(results->front().getParams()->size() == 0);
+        REQUIRE(results->back().getUrl() == "URL2");
+        REQUIRE(results->back().getParams()->size() == 1);
+        REQUIRE(results->back().getParams()->at("rel") == "next");
+    }
+}
+
 TEST_CASE("can split RFC5988 link header values", "[RFC5988]") {
     SECTION("can split an empty string") {
         auto results = http::RFC5988::splitLinkValues("");

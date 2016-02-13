@@ -1,16 +1,29 @@
 #include "rfc5988.h"
 
 namespace http {
-    void RFC5988::parse(const std::string& header) {
-        auto values = splitLinkValues(header);
+    std::shared_ptr<std::vector<rfc5988::Model>> RFC5988::parse(const std::string& header) {
+        auto results = std::make_shared<std::vector<rfc5988::Model>>();
+        auto values  = splitLinkValues(header);
 
         for (auto& value : *values) {
             auto parts = splitLinkValue(value);
-            if (parts->size() < 1) continue;
 
-            auto uri = parts->front();
-            chompUriReference(uri);
+            if (parts->size() >= 1) {
+                auto uri = parts->front();
+                parts->erase(parts->begin());
+                chompUriReference(uri);
+
+                auto params = std::make_shared<rfc5988::Params>();
+                for (auto& part : *parts) {
+                    auto param = splitLinkParam(part);
+                    (*params)[param->first] = param->second;
+                }
+
+                results->push_back(rfc5988::Model(uri, params));
+            }
         }
+
+        return std::move(results);
     }
 
     std::shared_ptr<std::vector<std::string>> RFC5988::split(
