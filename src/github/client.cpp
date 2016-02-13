@@ -30,18 +30,35 @@ namespace github {
         http::GetParams params = { { "page", "1" }, { "per_page", "100" } };
         if (opts) { params.insert(opts->begin(), opts->end()); }
 
-        auto  response = http_->doGet(path.str(), &params);
-        auto  body     = response.getBody();
-        auto& header   = *response.getParsedHeader();
+        std::string url = path.str();
+        auto results = std::make_shared<response::util::Array<response::GitHubCommit>>();
 
-        value out;
-        parse(out, body.begin(), body.end(), err);
+        while (!url.empty()) {
+            auto  response = http_->doGet(url, &params);
+            auto  body     = response.getBody();
+            auto& header   = *response.getParsedHeader();
 
-        if (!err->empty()) {
-            return response::GitHubCommitArrayPtr();
+            if (response.getStatusCode() != 200) {
+                *err = body;
+                return response::GitHubCommitArrayPtr();
+            }
+
+            value out;
+            parse(out, body.begin(), body.end(), err);
+
+            if (!err->empty()) {
+                return response::GitHubCommitArrayPtr();
+            }
+
+            auto fragments = response::GitHubCommit::inflateArray(out, err);
+            for (auto& fragment : *fragments) {
+                results->push_back(fragment);
+            }
+
+            url = getNextUrl(header);
         }
 
-        return response::GitHubCommit::inflateArray(out, err);
+        return results;
     }
 
     response::GitHubCommitPtr Client::fetchReposCommit(
@@ -68,5 +85,19 @@ namespace github {
         }
 
         return response::GitHubCommit::inflate(out, err);
+    }
+
+    std::string Client::getNextUrl(http::HeaderMap& header) {
+        if (header.count("Link") > 0) {
+            auto links = http::RFC5988::parse(header["Link"]);
+            for (auto& link : *links) {
+                if (link.getParams()->count("rel") && link.getParams()->at("rel") == "next") {
+                    auto uri = link.getUrl();
+                    if (!uri.empty()) return uri;
+                }
+            }
+        }
+
+        return "";
     }
 }

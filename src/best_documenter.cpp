@@ -28,12 +28,14 @@ int main(int argc, char** argv) {
     github->setAccessToken(config->getAccessToken());
     counter->setRepos(config->getRepos());
 
-    //
-    // auto result = counter->compute();
+
+    auto result = counter->compute();
 
     //
     auto commits = github->fetchReposCommits("pine613", "dotfiles", &err);
     if (!err.empty()) std::cout << err << std::endl;
+
+    std::cout << commits->size() << std::endl;
 
     auto commit = commits->front();
     std::cout << commit->committer->login << std::endl;

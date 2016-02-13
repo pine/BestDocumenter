@@ -10,6 +10,12 @@ namespace best_documenter {
 
     std::shared_ptr<model::Result> Counter::compute() {
         auto result = std::make_shared<model::Result>();
+
+        for (auto& repo : repos_) {
+            auto commits = github->fetchReposCommits("pine613", "dotfiles", &err);
+            if (!err.empty()) std::cout << err << std::endl;
+        }
+
         return result;
     }
 

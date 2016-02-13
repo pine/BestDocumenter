@@ -5,6 +5,7 @@
 #include <picojson.h>
 
 #include "../http/client.h"
+#include "../http/rfc5988.h"
 #include "response/github_commit.h"
 #include "response/util.h"
 
@@ -34,5 +35,7 @@ namespace github {
 
     private:
         std::shared_ptr<http::Client> http_;
+
+        std::string getNextUrl(http::HeaderMap& header);
     };
 }
