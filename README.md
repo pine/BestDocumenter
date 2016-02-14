@@ -1,7 +1,13 @@
 # BestDocumenter [![Build Status](https://travis-ci.org/pine613/BestDocumenter.svg?branch=master)](https://travis-ci.org/pine613/BestDocumenter)
 Count your document contributions
 
-## Requirements
+## Development environment
+
+- C++11
+- Mac OS X / Ubuntu 14.04
+- cmake
+- libcurl4, libgflags
+
 ### Mac OS X
 First, you must install [Homebrew](http://brew.sh/).
 
