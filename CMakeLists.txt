@@ -4,6 +4,7 @@ include_directories("lib")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "bin/")
 add_definitions("-std=c++11")
 add_definitions("-DPICOJSON_USE_INT64")
+add_definitions("-static")
 
 find_package(PkgConfig)
 pkg_check_modules(PC_gflags QUIET libgflags)

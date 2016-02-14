@@ -23,11 +23,17 @@ namespace http {
             )
     {
         Response response;
+        std::string urlWithParams = url;
+
+        auto queryString = getQueryString(params);
+        if (queryString.size() > 0) {
+            urlWithParams += "?" + queryString;
+        }
 
         curl_easy_setopt(curl_, CURLOPT_HTTPHEADER, slist_);
         curl_easy_setopt(curl_, CURLOPT_WRITEDATA, &response);
         curl_easy_setopt(curl_, CURLOPT_HEADERDATA, &response);
-        curl_easy_setopt(curl_, CURLOPT_URL, url.c_str());
+        curl_easy_setopt(curl_, CURLOPT_URL, urlWithParams.c_str());
         curl_easy_perform(curl_);
 
         int statusCode;

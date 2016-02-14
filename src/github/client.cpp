@@ -56,6 +56,7 @@ namespace github {
             }
 
             url = getNextUrl(header);
+            params.clear();
         }
 
         return results;
@@ -74,8 +75,6 @@ namespace github {
 
         auto response = http_->doGet(path.str());
         auto body     = response.getBody();
-
-        std::cout << body << std::endl;
 
         value out;
         parse(out, body.begin(), body.end(), err);

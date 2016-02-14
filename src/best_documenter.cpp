@@ -2,11 +2,13 @@
 #include <memory>
 #include <fstream>
 #include <sstream>
+#include <chrono>
 #include <picojson.h>
 
 #include "best_documenter/parser.h"
 #include "best_documenter/config.h"
 #include "best_documenter/counter.h"
+#include "best_documenter/duration.h"
 #include "github/client.h"
 #include "http/client.h"
 #include "http/rfc5988.h"
@@ -28,24 +30,25 @@ int main(int argc, char** argv) {
     github->setAccessToken(config->getAccessToken());
     counter->setRepos(config->getRepos());
 
+    auto duration = Duration::fromDays(parser.getDurationDays());
+    auto result   = counter->compute(duration);
 
-    auto result = counter->compute();
+    // FIXME: 切り出し
+    std::cout << std::endl;
+    std::cout << "BestDocumenter v0.1.0" << std::endl;
+    std::cout << "BEGIN: " << duration.fetchSince() << std::endl;
+    std::cout << "END  : " << duration.fetchUntil() << std::endl;
+    std::cout << std::endl;
 
-    //
-    auto commits = github->fetchReposCommits("pine613", "dotfiles", &err);
-    if (!err.empty()) std::cout << err << std::endl;
+    for (auto& change : result->changes) {
+        if (change.first.empty()) continue;
 
-    std::cout << commits->size() << std::endl;
-
-    auto commit = commits->front();
-    std::cout << commit->committer->login << std::endl;
-    std::cout << commit->sha << std::endl;
-    //
-    // auto commitDetail = github.fetchReposCommit("pine613", "crystal-rfc5988", commit->sha, &err);
-    // if (!err.empty()) std::cout << err << std::endl;
-    //
-    // std::cout << commitDetail->committer->login << std::endl;
-    // std::cout << commitDetail->files->front()->filename << std::endl;
+        std::cout << change.first << ": " << change.second << " changes ";
+        std::cout << "( +";
+        std::cout << result->additions[change.first] << " / -";
+        std::cout << result->deletions[change.first];
+        std::cout << " )" << std::endl;
+    }
 
     return 0;
 }
